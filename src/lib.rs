@@ -14,6 +14,7 @@ use search_book::SearchBook;
 use utils::fetch_path;
 
 async fn download_caimoge(input_url: &str) -> Result<Vec<u8>, ()> {
+    println!("{}", input_url);
     let html_id = input_url
         .trim()
         .split('/')
@@ -22,6 +23,7 @@ async fn download_caimoge(input_url: &str) -> Result<Vec<u8>, ()> {
         .split('.')
         .next()
         .unwrap();
+
     let novel_url =
         String::from("https://down.caimoge.net/modules/article/txtarticle.php?id=") + html_id;
 

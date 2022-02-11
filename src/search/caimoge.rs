@@ -17,12 +17,14 @@ pub async fn search_caimoge(search_key: &str) -> Result<Vec<SearchBook>, ()> {
                 .select("dl")
                 .iter()
             {
-                let link = base.join(&dl
-                .select(
-                    "#sitembox > dl:nth-child(1) > dd:nth-child(2) > h3:nth-child(1) > a:nth-child(1)",
-                )
-                .attr_or("href", "nothing")
-                .to_string()).unwrap().to_string();
+                let link = base
+                    .join(
+                        &dl.select("dd:nth-child(2) > h3:nth-child(1) > a:nth-child(1)")
+                            .attr_or("href", "nothing")
+                            .to_string(),
+                    )
+                    .unwrap()
+                    .to_string();
 
                 search_books.push(SearchBook {
                     书名: dl
