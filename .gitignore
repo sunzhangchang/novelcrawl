@@ -6,4 +6,5 @@ dist
 node_modules
 .vscode-test/
 index.js
-index.t.js
+index.d.ts
+*.node

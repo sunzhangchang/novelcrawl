@@ -5,69 +5,74 @@ extern crate napi_derive;
 
 use std::io::Write;
 
-use encoding::all::GBK;
-use encoding::{DecoderTrap, Encoding};
-use futures::executor::block_on;
-use regex::Regex;
-use reqwest::{header::USER_AGENT, Client, Method};
+mod search;
+mod search_book;
+mod utils;
 
-const USER_AGENT_VAL: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
+use search::caimoge::search_caimoge;
+use search_book::SearchBook;
+use utils::fetch_path;
 
-#[tokio::main]
-async fn fetch_path(path: &str) -> (String, Vec<u8>) {
-  let mut data = (String::new(), vec![]);
-
-  let request = reqwest::Client::new()
-    .request(Method::GET, path)
-    .header(USER_AGENT, USER_AGENT_VAL)
-    .build()
-    .unwrap();
-
-  match block_on(Client::new().execute(request)) {
-    Ok(response) => {
-      let header = response
-        .headers()
-        .get("content-disposition")
+async fn download_caimoge(input_url: &str) -> Result<Vec<u8>, ()> {
+    let html_id = input_url
+        .trim()
+        .split('/')
+        .last()
         .unwrap()
-        .clone();
-      let name = header.as_bytes();
-      let name = GBK.decode(name, DecoderTrap::Strict).unwrap();
-      let name = name.split("filename=").last().unwrap();
+        .split('.')
+        .next()
+        .unwrap();
+    let novel_url =
+        String::from("https://down.caimoge.net/modules/article/txtarticle.php?id=") + html_id;
 
-      match block_on(response.bytes()) {
-        Ok(data_buf) => {
-          data = (String::from(name), data_buf.to_vec());
+    let response = fetch_path(&novel_url).await;
+
+    if let Ok(res) = response {
+        match res.bytes().await {
+            Ok(data_buf) => {
+                let data = data_buf.to_vec();
+                Ok(data)
+            }
+            Err(_) => {
+                println!("Read response bytes error!");
+                Err(())
+            }
         }
-        Err(_) => {
-          println!("Read response bytes error!");
-        }
-      };
+    } else {
+        Err(())
     }
-    Err(_) => {
-      println!("Request get error!");
-    }
-  }
-  data
 }
 
 #[napi]
-pub fn crawl(input_url: String) -> String {
-  // let input_url = "https://www.caimoge.net/txt/69667.html";
-  let re = Regex::new(r"((http(s)?:)?//)?www.caimoge.net/txt/[1-9]+.html").unwrap();
-  let url = input_url.trim();
+pub async fn rs_search(search_key: String) -> Option<Vec<SearchBook>> {
+    let mut search_books = Vec::new();
 
-  if !re.is_match_at(url, 0) {
-    return String::from("目前只支持采墨阁(www.caimoge.net)!");
-  }
+    if let Ok(data) = search_caimoge(&search_key).await {
+        search_books.extend(data)
+    }
 
-  let html_id = url.split('/').last().unwrap().split('.').next().unwrap();
-  let novel_url =
-    String::from("https://down.caimoge.net/modules/article/txtarticle.php?id=") + html_id;
+    if search_books.len() > 0 {
+        Some(search_books)
+    } else {
+        None
+    }
+}
 
-  let (name, data) = fetch_path(&novel_url);
-  let name = name.split("[www.caimoge.net]").next().unwrap();
-  let mut f = std::fs::File::create(String::from(name) + ".txt").unwrap();
-  f.write(&data).unwrap();
+#[napi]
+pub async fn rs_download(download_url: String, download_path: String) -> Option<()> {
+    let data = if let Ok(res) = download_caimoge(&download_url).await {
+        res
+    } else {
+        return None;
+    };
 
-  String::from("Ok")
+    let mut pth = download_path;
+
+    if !&pth.ends_with(".txt") {
+        pth += ".txt"
+    }
+
+    let mut f = std::fs::File::create(pth).unwrap();
+    f.write(&data).unwrap();
+    Some(())
 }
