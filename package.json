@@ -5,7 +5,15 @@
   "types": "index.d.ts",
   "napi": {
     "name": "novelcrawl",
-    "triples": {}
+    "triples": {
+      "additional": [
+        "aarch64-unknown-linux-gnu",
+        "aarch64-unknown-linux-musl",
+        "aarch64-pc-windows-msvc",
+        "x86_64-unknown-linux-musl",
+        "i686-pc-windows-msvc"
+      ]
+    }
   },
   "license": "MIT",
   "devDependencies": {
@@ -29,10 +37,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sunzhangchang/novelcrawl.git"
-  },
-  "optionalDependencies": {
-    "novelcrawl-win32-x64-msvc": "0.2.0",
-    "novelcrawl-darwin-x64": "0.2.0",
-    "novelcrawl-linux-x64-gnu": "0.2.0"
   }
 }
