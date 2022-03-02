@@ -37,5 +37,15 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sunzhangchang/novelcrawl.git"
+  },
+  "optionalDependencies": {
+    "novelcrawl-win32-x64-msvc": "0.2.0",
+    "novelcrawl-darwin-x64": "0.2.0",
+    "novelcrawl-linux-x64-gnu": "0.2.0",
+    "novelcrawl-linux-arm64-gnu": "0.2.0",
+    "novelcrawl-linux-arm64-musl": "0.2.0",
+    "novelcrawl-win32-arm64-msvc": "0.2.0",
+    "novelcrawl-linux-x64-musl": "0.2.0",
+    "novelcrawl-win32-ia32-msvc": "0.2.0"
   }
 }

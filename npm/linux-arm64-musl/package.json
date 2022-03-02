@@ -1,0 +1,25 @@
+{
+  "name": "novelcrawl-linux-arm64-musl",
+  "version": "0.2.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "novelcrawl.linux-arm64-musl.node",
+  "files": [
+    "novelcrawl.linux-arm64-musl.node"
+  ],
+  "author": {
+    "name": "Cyanogenaq"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunzhangchang/novelcrawl.git"
+  }
+}
