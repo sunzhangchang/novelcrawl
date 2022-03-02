@@ -1,0 +1,25 @@
+{
+  "name": "novelcrawl-win32-x64-msvc",
+  "version": "0.2.0",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "novelcrawl.win32-x64-msvc.node",
+  "files": [
+    "novelcrawl.win32-x64-msvc.node"
+  ],
+  "author": {
+    "name": "Cyanogenaq"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunzhangchang/novelcrawl.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}

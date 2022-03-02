@@ -1,0 +1,25 @@
+{
+  "name": "novelcrawl-darwin-x64",
+  "version": "0.2.0",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "novelcrawl.darwin-x64.node",
+  "files": [
+    "novelcrawl.darwin-x64.node"
+  ],
+  "author": {
+    "name": "Cyanogenaq"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunzhangchang/novelcrawl.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}

@@ -25,5 +25,14 @@
   "author": {
     "name": "Cyanogenaq"
   },
-  "publisher": "Cyanogenaq"
+  "publisher": "Cyanogenaq",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunzhangchang/novelcrawl.git"
+  },
+  "optionalDependencies": {
+    "novelcrawl-win32-x64-msvc": "0.2.0",
+    "novelcrawl-darwin-x64": "0.2.0",
+    "novelcrawl-linux-x64-gnu": "0.2.0"
+  }
 }
