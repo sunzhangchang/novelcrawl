@@ -20,7 +20,7 @@
     "build:debug": "napi build --platform",
     "prepublishOnly": "napi prepublish -t npm",
     "version": "napi version",
-    "test": "pnpm build:debug && node test.mjs"
+    "test": "npm build:debug && node test.mjs"
   },
   "author": {
     "name": "Cyanogenaq"
