@@ -1,7 +1,12 @@
 #![deny(clippy::all)]
 
-#[macro_use]
-extern crate napi_derive;
+use wasm_bindgen::prelude::*;
+
+// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
+// allocator.
+#[cfg(feature = "wee_alloc")]
+#[global_allocator]
+static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 use std::{io::Write, path::PathBuf};
 
@@ -14,7 +19,7 @@ use search_book::SearchBook;
 use utils::fetch_path;
 
 async fn download_caimoge(input_url: &str) -> Result<Vec<u8>, ()> {
-    println!("{}", input_url);
+    // println!("{}", input_url);
     let html_id = input_url
         .trim()
         .split('/')
@@ -45,7 +50,7 @@ async fn download_caimoge(input_url: &str) -> Result<Vec<u8>, ()> {
     }
 }
 
-#[napi]
+#[wasm_bindgen]
 pub async fn rs_search(search_key: String) -> Option<Vec<SearchBook>> {
     let mut search_books = Vec::new();
 
@@ -60,7 +65,7 @@ pub async fn rs_search(search_key: String) -> Option<Vec<SearchBook>> {
     }
 }
 
-#[napi]
+#[wasm_bindgen]
 pub async fn rs_download(url: String, dir: String, name: String) -> Option<()> {
     let data = if let Ok(res) = download_caimoge(&url).await {
         res

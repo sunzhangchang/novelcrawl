@@ -1,4 +1,4 @@
-#[napi]
+#[wasm_bindgen]
 pub struct SearchBook {
     pub 书名: String,
     pub 作者: String,
