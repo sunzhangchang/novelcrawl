@@ -65,7 +65,7 @@ jobs:
             target: aarch64-unknown-linux-gnu
             setup: |
               sudo apt-get update
-              sudo apt-get install openssl-devel g++-aarch64-linux-gnu gcc-aarch64-linux-gnu -y
+              sudo apt-get install openssl g++-aarch64-linux-gnu gcc-aarch64-linux-gnu -y
             build: |
               yarn build --target=aarch64-unknown-linux-gnu
               aarch64-linux-gnu-strip *.node
@@ -74,7 +74,7 @@ jobs:
             target: armv7-unknown-linux-gnueabihf
             setup: |
               sudo apt-get update
-              sudo apt-get install openssl-devel gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf -y
+              sudo apt-get install openssl gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf -y
             build: |
               yarn build --target=armv7-unknown-linux-gnueabihf
               arm-linux-gnueabihf-strip *.node
