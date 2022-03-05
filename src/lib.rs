@@ -3,7 +3,7 @@
 #[macro_use]
 extern crate napi_derive;
 
-use std::io::Write;
+use std::{io::Write, path::PathBuf};
 
 mod search;
 mod search_book;
@@ -61,20 +61,34 @@ pub async fn rs_search(search_key: String) -> Option<Vec<SearchBook>> {
 }
 
 #[napi]
-pub async fn rs_download(download_url: String, download_path: String) -> Option<()> {
-    let data = if let Ok(res) = download_caimoge(&download_url).await {
+pub async fn rs_download(url: String, dir: String, name: String) -> Option<()> {
+    let data = if let Ok(res) = download_caimoge(&url).await {
         res
     } else {
         return None;
     };
 
-    let mut pth = download_path;
+    // let mut dir = dir;
 
-    if !&pth.ends_with(".txt") {
-        pth += ".txt"
-    }
+    // if !&dir.ends_with("/") {
+    //     dir += "/";
+    // }
 
-    let mut f = std::fs::File::create(pth).unwrap();
-    f.write(&data).unwrap();
-    Some(())
+    // println!("{}", &dir);
+
+    Some((||
+    {
+        let mut ptt = PathBuf::from(&dir);
+        ptt.push(&name);
+        ptt.set_extension("txt");
+
+        let pth = ptt.as_path();
+
+        // println!("--  {:?}", pth);
+
+        std::fs::create_dir_all(&dir).unwrap();
+
+        let mut f = std::fs::File::create(pth).unwrap();
+        f.write(&data).unwrap();
+    })())
 }
