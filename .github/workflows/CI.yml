@@ -228,7 +228,9 @@ jobs:
           path: node_modules
           key: npm-cache-test-linux-x64-gnu-${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --ignore-scripts --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          yarn install --ignore-scripts --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
